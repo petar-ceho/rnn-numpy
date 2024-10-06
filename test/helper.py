@@ -13,7 +13,7 @@ class RNNTorch(nn.Module):
         self.h2h = nn.Linear(hidden_size, hidden_size)
         self.h2o = nn.Linear(hidden_size, output_size)
         
-        n = 2.5 #default pytorch init is n=sqrt(1/input_size) U(-n,n) scale up the params for testing.   
+        n = 2 #default pytorch init is n=sqrt(1/input_size) U(-n,n) scale up the params for testing.   
         self.i2h.weight.data.uniform_(-n, n, generator=g)
         self.i2h.bias.data.uniform_(-n, n, generator=g)
         self.h2h.weight.data.uniform_(-n, n, generator=g)
