@@ -1,7 +1,8 @@
 import numpy as np
 
 class RNN:
-
+    # TODO:try out kaiming initialization just like pytorch with uniform distribution 
+    # U(-sqrt(1/n_letters),sqrt(1/n_letters))
     def __init__(self,n_letters,hidden_size,learning_rate,target_length,
                  weight_req_l1=0,weight_req_l2=0,dropout_rate=1):
         #hyperparams
@@ -46,6 +47,7 @@ class RNN:
                 dh*=self.binary_mask #dy_dh dropout layer
             dhraw=(1-self.hs[t]*self.hs[t])*dh #tanh backpropagation
             dh = np.dot(dhraw, self.Whh.T) #dy_dh for t-1    
+            
             dbh+=np.sum(dhraw,axis=0,keepdims=True)#dhraw_dbh
             dbx+=np.sum(dhraw,axis=0,keepdims=True)#dhraw_dbx
             dWxh+=np.dot(inputs[t].T,dhraw)#dhraw_dwxh
@@ -63,7 +65,6 @@ class RNN:
             dL1_dWxh[self.Wxh<0]=-1;dL1_dWhh[self.Whh<0]=-1;dL1_dWhy[self.Why<0]=-1
             dWxh+=self.weight_req_l1*dL1_dWxh;dWhh+=self.weight_req_l1*dL1_dWhh;dWhy+=self.weight_req_l1*dL1_dWhy
         
-
         return dWxh, dWhh, dWhy, dbh, dby, dbx
 
     
