@@ -34,9 +34,9 @@ Unit tests for this implementation compare the backward pass of the custom RNN i
 - **Epochs**: 50  
 
 #### Loss:
-- **Total Training Loss (after 701,150 iterations)**: 0.6441  
-- **Total Dev Loss (after 1,838 iterations)**: 3.2547  
-- **Total Test Loss (after 1,865 iterations)**: 3.2738  
+- **mean Training Loss (after 701,150 iterations)**: 0.6441  
+- **mean Dev Loss (after 1,838 iterations)**: 3.2547  
+- **mean Test Loss (after 1,865 iterations)**: 3.2738  
 
 ---
 
@@ -46,9 +46,9 @@ Unit tests for this implementation compare the backward pass of the custom RNN i
 - **Epochs**: 50  
 
 #### Loss:
-- **Total Training Loss (after 701,150 iterations)**: 0.9307  
-- **Total Dev Loss (after 1,838 iterations)**: 1.7544  
-- **Total Test Loss (after 1,865 iterations)**: 1.6523  
+- **mean Training Loss (after 701,150 iterations)**: 0.9307  
+- **mean Dev Loss (after 1,838 iterations)**: 1.7544  
+- **mean Test Loss (after 1,865 iterations)**: 1.6523  
 
 ---
 
@@ -56,9 +56,9 @@ Unit tests for this implementation compare the backward pass of the custom RNN i
 - **L1 + L2 Regularization**
 
 #### Loss:
-- **Total Training Loss (after 701,150 iterations)**: 1.2028  
-- **Total Dev Loss (after 1,838 iterations)**: 1.6978  
-- **Total Test Loss (after 1,865 iterations)**: 1.5477  
+- **mean Training Loss (after 701,150 iterations)**: 1.2028  
+- **mean Dev Loss (after 1,838 iterations)**: 1.6978  
+- **mean Test Loss (after 1,865 iterations)**: 1.5477  
 
 ---
 
@@ -68,9 +68,9 @@ Unit tests for this implementation compare the backward pass of the custom RNN i
 - **Max Gradient Norm**: 5.0  
 
 #### Loss:
-- **Total Training Loss (after 14,023 iterations)**: 1.1252  
-- **Total Dev Loss (after 1,838 iterations)**: 1.3728  
-- **Total Test Loss (after 1,865 iterations)**: 1.2689  
+- **mean Training Loss (after 14,023 iterations)**: 1.1252  
+- **mean Dev Loss (after 1,838 iterations)**: 1.3728  
+- **mean Test Loss (after 1,865 iterations)**: 1.2689  
 
 
 
