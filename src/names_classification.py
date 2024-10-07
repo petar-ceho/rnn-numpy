@@ -38,9 +38,8 @@ def evaluate(data,hprev,data_type,tensor_helper):
 
     print(f'total {data_type} loss after {n} iterations {sum(lossi.values())/n}')
 
-
-
 if __name__ == '__main__':
+    #download the dataset from here  https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html
     path='../data/names/*.txt'    
     
     category_lines = {} #dict of labels and features
@@ -60,9 +59,9 @@ if __name__ == '__main__':
     cross_entropy=CrossEntropyLoss(all_categories=all_categories)
     max_norm=5.0 #gradient norm clipping
     epochs=50
+    n=0
 
     lossi,lossi_epochs,accuracy={},{},{}
-    n=0
     for i in range(epochs):
         #shuffle each epoch the training dataset to reduce overfitting
         train_list=list(train.items())
