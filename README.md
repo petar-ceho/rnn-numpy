@@ -4,11 +4,14 @@ This repository implements a many-to-one Recurrent Neural Network (RNN) with Sof
 
 - **[Variational Dropout](https://arxiv.org/abs/1512.05287)**: Applied to the RNN layers to improve generalization and avoid overfitting.
 - **[Gradient Norm Clipping](https://arxiv.org/abs/1211.5063)**: Ensures stable training by limiting the norm of the gradients.
+- **L1 Regularization**: Adds a penalty proportional to the absolute value of the weights to the loss function, promoting sparsity in the model.
+
+- **L2 Regularization**: Adds a penalty proportional to the square of the weights to the loss function, helping to prevent overfitting by discouraging large weights.
+
 
 ## Acknowledgments
 
 A significant portion of the RNN implementation was inspired by [Karpathy's RNN implementation](https://gist.github.com/karpathy/d4dee566867f8291f086). 
-
 
 
 ## Examples: Name Classification
