@@ -26,5 +26,51 @@ Unit tests for this implementation compare the backward pass of the custom RNN i
 
 
 
+## Training Results
+
+### Configuration 1: 
+- **Hidden Size**: 100  
+- **Learning Rate**: 0.005  
+- **Epochs**: 50  
+
+#### Loss:
+- **Total Training Loss (after 701,150 iterations)**: 0.6441  
+- **Total Dev Loss (after 1,838 iterations)**: 3.2547  
+- **Total Test Loss (after 1,865 iterations)**: 3.2738  
+
+---
+
+### Configuration 2: 
+- **Hidden Size**: 50  
+- **Learning Rate**: 0.001  
+- **Epochs**: 50  
+
+#### Loss:
+- **Total Training Loss (after 701,150 iterations)**: 0.9307  
+- **Total Dev Loss (after 1,838 iterations)**: 1.7544  
+- **Total Test Loss (after 1,865 iterations)**: 1.6523  
+
+---
+
+### Configuration 3: 
+- **L1 + L2 Regularization**
+
+#### Loss:
+- **Total Training Loss (after 701,150 iterations)**: 1.2028  
+- **Total Dev Loss (after 1,838 iterations)**: 1.6978  
+- **Total Test Loss (after 1,865 iterations)**: 1.5477  
+
+---
+
+### Configuration 4: 
+- **With Variational Dropouts** (Gradient clipping needed due to exploding gradients)
+- **Dropout Rate**: 0.4  
+- **Max Gradient Norm**: 5.0  
+
+#### Loss:
+- **Total Training Loss (after 14,023 iterations)**: 1.1252  
+- **Total Dev Loss (after 1,838 iterations)**: 1.3728  
+- **Total Test Loss (after 1,865 iterations)**: 1.2689  
+
 
 
