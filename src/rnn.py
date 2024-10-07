@@ -1,8 +1,6 @@
 import numpy as np
 
 class RNN:
-    # TODO:try out kaiming initialization just like pytorch with uniform distribution 
-    # U(-sqrt(1/n_letters),sqrt(1/n_letters))
     def __init__(self,n_letters,hidden_size,learning_rate,target_length,
                  weight_req_l1=0,weight_req_l2=0,dropout_rate=1):
         #hyperparams

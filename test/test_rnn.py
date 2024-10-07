@@ -2,8 +2,8 @@ import unittest
 import numpy as np
 import torch 
 import torch.nn as nn
-from rnn import RNN,CrossEntropyLoss
-from examples.names_classification import TensorHelper
+from src.rnn import RNN,CrossEntropyLoss
+from src.names_classification import TensorHelper
 from helper import all_categories,mock_data,RNNTorch,all_letters
 
 
@@ -30,7 +30,7 @@ class Test(unittest.TestCase):
         rnn_numpy.bh=rnn_torch.h2h.bias.detach().clone().numpy().reshape(1,-1)
         rnn_numpy.by=rnn_torch.h2o.bias.detach().clone().numpy().reshape(1,-1)
 
-        # torch rnn forward/backward pass/gradient descent:
+        # torch rnn forward/backward pass:
         for epoch in range(epochs):
             for name,label in mock_data.items():
                 X=torch.from_numpy(tensor_helper.line_to_tensor(name)).to(torch.float32)
@@ -46,7 +46,7 @@ class Test(unittest.TestCase):
                 #backward pass
                 lossi.backward()
            
-        # numpy rnn forward/backward pass/gradient descent:
+        # numpy rnn forward/backward pass:
         for epoch in range(epochs):
             for name,label in mock_data.items():
                 #data preparation 
@@ -60,7 +60,7 @@ class Test(unittest.TestCase):
                 dy=cross_entropy.backward(probs,Y)
                 dWxh, dWhh, dWhy, dbh, dby, dbx=rnn_numpy.backward(dy,X)
       
-      
+
         self.assertTrue(np.allclose(dWxh,rnn_torch.i2h.weight.grad.T.numpy(),atol=0.01),'dWxh is not correct')
         self.assertTrue(np.allclose(dWhh,rnn_torch.h2h.weight.grad.T.numpy(),atol=0.01),'dWhh is not correct')
         self.assertTrue(np.allclose(dWhy,rnn_torch.h2o.weight.grad.T.numpy(),atol=0.01),'dWhy is not correct')
