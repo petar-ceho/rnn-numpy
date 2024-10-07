@@ -82,7 +82,7 @@ if __name__ == '__main__':
             lossi[n]=loss
             acc+=int(probs.argmax()==Y.argmax())
 
-            if n % 5000 == 0:
+            if n % 10000 == 0:
                 print('loss with key  after iteration: ',n,loss,label)
                 print(f'predicted label {all_categories[probs.argmax()]}: vs correct {all_categories[Y.argmax()]}')
 
