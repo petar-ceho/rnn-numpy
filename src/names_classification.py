@@ -4,7 +4,7 @@ import os
 from rnn import RNN,CrossEntropyLoss
 from helper import findFiles,readLines,n_letters,all_letters,TensorHelper
 
-#train(80%),dev(10%),test(10%) no duplicate names
+#train(80%),dev(10%),test(10%) no duplicate names and with uniform distribution of classes across datasets.
 def build_dataset(dataset):
     train_dataset,dev_dataset,test_dataset={},{},{}
     for key in dataset.keys():
@@ -96,7 +96,7 @@ if __name__ == '__main__':
                 for param in [dWxh, dWhh, dWhy, dbh, dby, dbx]:
                     param*=clip_factor
 
-            #  stohastic gradient descent TODO:implement other optimizers perhams ADAM
+            #  stohastic gradient descent TODO:implement ADAM
             for param,dparam in zip(
                 [rnn_numpy.Wxh, rnn_numpy.Whh, rnn_numpy.Why, rnn_numpy.bh, rnn_numpy.by, rnn_numpy.bx],
                 [dWxh, dWhh, dWhy, dbh, dby, dbx]):
