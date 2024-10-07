@@ -2,10 +2,9 @@ import unittest
 import numpy as np
 import torch 
 import torch.nn as nn
+from src.helper import TensorHelper
 from src.rnn import RNN,CrossEntropyLoss
-from src.names_classification import TensorHelper
 from helper import all_categories,mock_data,RNNTorch,all_letters
-
 
 class Test(unittest.TestCase):
     
