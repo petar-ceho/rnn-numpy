@@ -16,9 +16,8 @@ A significant portion of the RNN implementation was inspired by [Karpathy's RNN 
 This repository includes an example of name classification inspired by the PyTorch tutorial on character-level RNN classification. You can refer to the original tutorial for more details: [PyTorch Char-RNN Name Classification Tutorial](https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html).
 
 
-
 ## Unit Testing
-Unit tests for this implementation compare the backward pass of the custom RNN in NumPy with the backward pass of PyTorch's RNN implementation. By comparing the gradients between PyTorch and NumPy, we can verify that the custom model behaves as expected(check test directory).
+Unit tests for this implementation compare the backward pass of the custom RNN in NumPy with the backward pass of PyTorch's RNN implementation. By comparing the gradients between PyTorch and NumPy.
 
 
 
