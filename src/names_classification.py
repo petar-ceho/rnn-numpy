@@ -58,7 +58,7 @@ if __name__ == '__main__':
     rnn_numpy=RNN(n_letters=n_letters,hidden_size=50,learning_rate=0.001,target_length=len(all_categories),
               weight_req_l1=0.001,weight_req_l2=0.0001,dropout_rate=0.5)
     cross_entropy=CrossEntropyLoss(all_categories=all_categories)
-    max_norm=5.0 #gradient norm clipping
+    max_norm=5.0 #grazient norm clipping
     epochs=50
     n=0
 
@@ -114,7 +114,6 @@ if __name__ == '__main__':
     evaluate(dev,rnn_numpy.init_hidden(),'dev',tensor_helper)
     evaluate(test,rnn_numpy.init_hidden(),'test',tensor_helper)
 
-
     while True:
         # Prompt the user for input
         user_input = input("Enter a name (or type 'exit' to stop): ")
@@ -127,4 +126,4 @@ if __name__ == '__main__':
         logits,hprev=rnn_numpy.forward(X,rnn_numpy.init_hidden())
         probs,category=cross_entropy.sample(inputs=logits)
 
-        print(f"Predicted category : {category}")
+        print(f"Predicted category : {category} probability {probs.max()}")
