@@ -59,7 +59,7 @@ if __name__ == '__main__':
               weight_req_l1=0.001,weight_req_l2=0.0001,dropout_rate=0.5)
     cross_entropy=CrossEntropyLoss(all_categories=all_categories)
     max_norm=5.0 #gradient norm clipping
-    epochs=1
+    epochs=50
     n=0
 
     lossi,lossi_epochs,accuracy={},{},{}
