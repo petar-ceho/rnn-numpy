@@ -2,6 +2,7 @@ import torch.nn as nn
 import torch
 import torch.nn.functional as F
 import string 
+import random
 
 class RNNTorch(nn.Module):
     def __init__(self, input_size, hidden_size, output_size):
@@ -44,6 +45,12 @@ mock_data={
  'Arah': 'English',
  'Batchish': 'Russian'
 }
+
+def get_mock_data():
+    mock_data_list=list(mock_data.items())
+    random.shuffle(mock_data_list)
+    return dict(mock_data_list)
+
 
 all_categories=[
  'Russian','Korean','Polish',

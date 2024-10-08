@@ -4,7 +4,8 @@ import torch
 import torch.nn as nn
 from src.helper import TensorHelper
 from src.rnn import RNN,CrossEntropyLoss
-from helper import all_categories,mock_data,RNNTorch,all_letters
+from helper import all_categories,get_mock_data,RNNTorch,all_letters
+import random
 
 class Test(unittest.TestCase):
     
@@ -24,10 +25,12 @@ class Test(unittest.TestCase):
         rnn_numpy.Wxh=rnn_torch.i2h.weight.T.detach().clone().numpy()
         rnn_numpy.Whh=rnn_torch.h2h.weight.T.detach().clone().numpy()
         rnn_numpy.Why=rnn_torch.h2o.weight.T.detach().clone().numpy()
-
+        #copy the biases from torch to numpy
         rnn_numpy.bx=rnn_torch.i2h.bias.detach().clone().numpy().reshape(1,-1)
         rnn_numpy.bh=rnn_torch.h2h.bias.detach().clone().numpy().reshape(1,-1)
         rnn_numpy.by=rnn_torch.h2o.bias.detach().clone().numpy().reshape(1,-1)
+
+        mock_data=get_mock_data()
 
         # torch rnn forward/backward pass:
         for epoch in range(epochs):
