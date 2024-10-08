@@ -18,7 +18,7 @@ A significant portion of the RNN implementation was inspired by [Karpathy's RNN 
 
 This repository includes an example of name classification inspired by the PyTorch tutorial on character-level RNN classification. You can refer to the original tutorial for more details: [PyTorch Char-RNN Name Classification Tutorial](https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html).
 
-Download the dataset put it in the data directory.  
+Download the dataset from link above and create data directory.  
 
 
 ## Unit Testing
