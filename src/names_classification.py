@@ -21,7 +21,7 @@ def build_dataset(dataset):
     return dict(train_list),dict(dev_list),dict(test_list)
 
 def evaluate(data,hprev,data_type,tensor_helper):
-    lossi,accuracy={},{}
+    lossi={}
     n=0
     for name,label in data.items():
         X=tensor_helper.line_to_tensor(name)
@@ -30,15 +30,13 @@ def evaluate(data,hprev,data_type,tensor_helper):
         logits,hprev=rnn_numpy.forward(X,hprev)
         probs,loss=cross_entropy.forward(logits,Y)
         lossi[n]=loss
-        acc+=int(probs.argmax()==Y.argmax())
 
         if n % 10000 == 0:
             print('loss with key  after iteration: ',n,loss,label)
             print(f'predicted label {all_categories[probs.argmax()]}: vs correct {all_categories[Y.argmax()]}')
         n+=1
 
-    print(f'total {data_type} loss after {n} iterations {sum(lossi.values())/n}')
-    print(f'mean accuracy after {n} iterations {sum(accuracy.values())/n}')
+    print(f'mean {data_type} loss after {n} iterations {sum(lossi.values())/n}')
 
 
 if __name__ == '__main__':
@@ -61,7 +59,7 @@ if __name__ == '__main__':
               weight_req_l1=0.001,weight_req_l2=0.0001,dropout_rate=0.5)
     cross_entropy=CrossEntropyLoss(all_categories=all_categories)
     max_norm=5.0 #gradient norm clipping
-    epochs=50
+    epochs=1
     n=0
 
     lossi,lossi_epochs,accuracy={},{},{}
