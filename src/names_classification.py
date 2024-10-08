@@ -20,6 +20,7 @@ def build_dataset(dataset):
 
     return dict(train_list),dict(dev_list),dict(test_list)
 
+#TODO:implement here accuracy 
 def evaluate(data,hprev,data_type,tensor_helper):
     lossi={}
     n=0
@@ -37,7 +38,6 @@ def evaluate(data,hprev,data_type,tensor_helper):
         n+=1
 
     print(f'mean {data_type} loss after {n} iterations {sum(lossi.values())/n}')
-
 
 if __name__ == '__main__':
     #download the dataset from here  https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html
@@ -113,3 +113,18 @@ if __name__ == '__main__':
     evaluate(train,rnn_numpy.init_hidden(),'train',tensor_helper)
     evaluate(dev,rnn_numpy.init_hidden(),'dev',tensor_helper)
     evaluate(test,rnn_numpy.init_hidden(),'test',tensor_helper)
+
+
+    while True:
+        # Prompt the user for input
+        user_input = input("Enter a name (or type 'exit' to stop): ")
+        # Check if the user wants to exit
+        if user_input.lower() == 'exit':
+            print("Goodbye!")
+            break
+
+        X=tensor_helper.line_to_tensor(user_input)
+        logits,loss=rnn_numpy.forward(X,rnn_numpy.init_hidden())
+        probs,category=cross_entropy.sample(inputs=logits)
+
+        print(f"Predicted category : {category}")
