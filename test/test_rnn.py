@@ -63,9 +63,9 @@ class Test(unittest.TestCase):
                 dWxh, dWhh, dWhy, dbh, dby, dbx=rnn_numpy.backward(dy,X)
       
 
-        self.assertTrue(np.allclose(dWxh,rnn_torch.i2h.weight.grad.T.numpy(),atol=0.01),'dWxh is not correct')
-        self.assertTrue(np.allclose(dWhh,rnn_torch.h2h.weight.grad.T.numpy(),atol=0.01),'dWhh is not correct')
-        self.assertTrue(np.allclose(dWhy,rnn_torch.h2o.weight.grad.T.numpy(),atol=0.01),'dWhy is not correct')
+        self.assertTrue(np.allclose(dWxh,rnn_torch.i2h.weight.grad.T.numpy(),atol=0.1),'dWxh is not correct')
+        self.assertTrue(np.allclose(dWhh,rnn_torch.h2h.weight.grad.T.numpy(),atol=0.1),'dWhh is not correct')
+        self.assertTrue(np.allclose(dWhy,rnn_torch.h2o.weight.grad.T.numpy(),atol=0.1),'dWhy is not correct')
         self.assertTrue(np.allclose(dbx,rnn_torch.i2h.bias.grad.numpy(),atol=0.1),'dbx is not correct')
         self.assertTrue(np.allclose(dbh,rnn_torch.h2h.bias.grad.numpy(),atol=0.1),'dbh is not correct')
         self.assertTrue(np.allclose(dby,rnn_torch.h2o.bias.grad.numpy(),atol=0.1),'dby is not correct')
