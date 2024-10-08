@@ -124,7 +124,7 @@ if __name__ == '__main__':
             break
 
         X=tensor_helper.line_to_tensor(user_input)
-        logits,loss=rnn_numpy.forward(X,rnn_numpy.init_hidden())
+        logits,hprev=rnn_numpy.forward(X,rnn_numpy.init_hidden())
         probs,category=cross_entropy.sample(inputs=logits)
 
         print(f"Predicted category : {category}")
