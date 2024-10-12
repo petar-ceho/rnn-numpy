@@ -4,7 +4,7 @@ import os
 from rnn import RNN,CrossEntropyLoss
 from helper import findFiles,readLines,n_letters,all_letters,TensorHelper
 
-#train(80%),dev(10%),test(10%) no duplicate names and with uniform distribution of classes across datasets.
+#train(80%),dev(10%),test(10%) no duplicate names 
 def build_dataset(dataset):
     train_dataset,dev_dataset,test_dataset={},{},{}
     for key in dataset.keys():
@@ -113,7 +113,8 @@ if __name__ == '__main__':
     evaluate(train,rnn_numpy.init_hidden(),'train',tensor_helper)
     evaluate(dev,rnn_numpy.init_hidden(),'dev',tensor_helper)
     evaluate(test,rnn_numpy.init_hidden(),'test',tensor_helper)
-
+    
+    #inference
     while True:
         # Prompt the user for input
         user_input = input("Enter a name (or type 'exit' to stop): ")
