@@ -18,7 +18,7 @@ class Test(unittest.TestCase):
         rnn_torch = RNNTorch(n_letters, hidden_size, len(all_categories))
         loss = nn.CrossEntropyLoss()
         #numpy rnn 
-        rnn_numpy=RNN(n_letters=n_letters,hidden_size=hidden_size,learning_rate=0,target_length=len(all_categories))
+        rnn_numpy=RNN(input_size=n_letters,hidden_size=hidden_size,learning_rate=0,output_size=len(all_categories))
         cross_entropy=CrossEntropyLoss(all_categories=all_categories)
 
         #copy the weights from torch to numpy 

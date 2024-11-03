@@ -55,7 +55,7 @@ if __name__ == '__main__':
     train,dev,test=build_dataset(category_lines)
    
     tensor_helper=TensorHelper(all_categories=all_categories,n_letters=n_letters,all_letters=all_letters)
-    rnn_numpy=RNN(n_letters=n_letters,hidden_size=50,learning_rate=0.001,target_length=len(all_categories),
+    rnn_numpy=RNN(input_size=n_letters,hidden_size=50,learning_rate=0.001,output_size=len(all_categories),
               weight_req_l1=0.001,weight_req_l2=0.0001,dropout_rate=0.5)
     cross_entropy=CrossEntropyLoss(all_categories=all_categories)
     max_norm=5.0 #grazient norm clipping

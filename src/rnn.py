@@ -1,18 +1,18 @@
 import numpy as np
 
 class RNN:
-    def __init__(self,n_letters,hidden_size,learning_rate,target_length,
+    def __init__(self,input_size,hidden_size,learning_rate,output_size,
                  weight_req_l1=0,weight_req_l2=0,dropout_rate=1):
         #hyperparams
         self.hidden_size=hidden_size
         self.learning_rate=learning_rate
         #models params
-        self.Wxh = np.random.randn(n_letters,hidden_size)*0.01 # input to hidden
+        self.Wxh = np.random.randn(input_size,hidden_size)*0.01 # input to hidden
         self.Whh = np.random.randn(hidden_size, hidden_size)*0.01 # hidden to hidden
-        self.Why = np.random.randn(hidden_size,target_length)*0.01 # hidden to output
+        self.Why = np.random.randn(hidden_size,output_size)*0.01 # hidden to output
         self.bx = np.zeros((1,hidden_size)) # input bias
         self.bh = np.zeros((1,hidden_size)) # hidden bias
-        self.by = np.zeros((1,target_length)) # output bias
+        self.by = np.zeros((1,output_size)) # output bias
         self.weight_req_l1=weight_req_l1 #l1 reqularization  
         self.weight_req_l2=weight_req_l2 #l2 reqularization 
         self.dropout_rate=1-dropout_rate #percentage of neurons to keep  
@@ -84,6 +84,25 @@ class RNN:
     def init_hidden(self):
         return np.zeros((1,self.hidden_size))
     
+
+
+class LSTM: 
+    
+    def __init__(self,n_letters,hidden_size,output_size):
+        self.n_letters=n_letters
+        self.hidden_size=hidden_size
+        
+
+    def forward():
+        pass
+
+    def backward():
+        pass
+
+    def sigmoid():
+        pass
+
+
 #softmax+categorical cross entropy 
 class CrossEntropyLoss: 
 
