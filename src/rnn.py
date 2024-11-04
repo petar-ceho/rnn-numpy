@@ -88,10 +88,20 @@ class RNN:
 
 class LSTM: 
     
-    def __init__(self,n_letters,hidden_size,output_size):
-        self.n_letters=n_letters
-        self.hidden_size=hidden_size
+    def __init__(self,input_size,hidden_size):
+        conc_input_size=input_size+hidden_size
+        #forget gate weights
+        self.Wf=np.random.randn(conc_input_size,hidden_size)
         
+        #input gate weights
+        self.Wi=np.random.randn(conc_input_size,hidden_size)
+        
+        #cell state candidate weights 
+        self.Wc=np.random.randn(conc_input_size,hidden_size)
+        
+        #output gate weighs
+        self.Wo=np.random.randn(conc_input_size,hidden_size)
+
 
     def forward():
         pass
