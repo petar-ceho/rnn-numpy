@@ -25,7 +25,7 @@ The dataset is pretty imbalanced:
 Download the dataset from link above and create data directory.  
 
 
-## Unit Testing
+## Unit  Testing
 Unit tests for this implementation compare the backward pass of the custom RNN in NumPy with the backward pass of PyTorch's RNN implementation. By comparing the gradients between PyTorch and NumPy.
 
 
