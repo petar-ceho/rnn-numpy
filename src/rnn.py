@@ -91,17 +91,16 @@ class LSTM:
     def __init__(self,input_size,hidden_size):
         conc_input_size=input_size+hidden_size
         #forget gate weights
-        self.Wf=np.random.randn(conc_input_size,hidden_size)
+        self.Wf=np.random.randn(conc_input_size,hidden_size)*0.01
         
         #input gate weights
-        self.Wi=np.random.randn(conc_input_size,hidden_size)
+        self.Wi=np.random.randn(conc_input_size,hidden_size)*0.01
         
         #cell state candidate weights 
-        self.Wc=np.random.randn(conc_input_size,hidden_size)
+        self.Wc=np.random.randn(conc_input_size,hidden_size)*0.01
         
         #output gate weighs
-        self.Wo=np.random.randn(conc_input_size,hidden_size)
-
+        self.Wo=np.random.randn(conc_input_size,hidden_size)*0.01
 
     def forward():
         pass
