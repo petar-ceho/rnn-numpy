@@ -92,24 +92,30 @@ class LSTM:
         conc_input_size=input_size+hidden_size
         #forget gate weights
         self.Wf=np.random.randn(conc_input_size,hidden_size)*0.01
-        
+        self.bf = np.zeros((1, hidden_size))                       # Shape: (1, 64)
         #input gate weights
         self.Wi=np.random.randn(conc_input_size,hidden_size)*0.01
-        
+        self.bi = np.zeros((1, hidden_size))                       # Shape: (1, 64)
         #cell state candidate weights 
         self.Wc=np.random.randn(conc_input_size,hidden_size)*0.01
-        
+        self.bc = np.zeros((1, hidden_size))                       # Shape: (1, 64)
         #output gate weighs
         self.Wo=np.random.randn(conc_input_size,hidden_size)*0.01
+        self.bo = np.zeros((1, hidden_size))                       # Shape: (1, 64)
 
-    def forward():
-        pass
+    def forward(self,inputs,h_prev,c_prev):
+        self.hs={};self.cs={};self.forget_g={}
+        self.input_g={};self.output_g={};self.cell_candidates={}
+
+        for t in range(len(inputs)):
+            pass
+
 
     def backward():
         pass
 
-    def sigmoid():
-        pass
+    def sigmoid(self,x):
+        return 1 / (1 + np.exp(-x))
 
 
 #softmax+categorical cross entropy 
