@@ -103,13 +103,21 @@ class LSTM:
         self.Wo=np.random.randn(conc_input_size,hidden_size)*0.01
         self.bo = np.zeros((1, hidden_size))                       # Shape: (1, 64)
 
-    def forward(self,inputs,h_prev,c_prev):
-        self.hs={};self.cs={};self.forget_g={}
-        self.input_g={};self.output_g={};self.cell_candidates={}
-
+    def forward(self,inputs,hprev,cprev):
+        self.hs={};self.cs={};self.concat_s={}
+        self.forget_g={};self.input_g={};self.output_g={};self.cell_candidates={}
+        #hs and cs at t=0  
+        self.hs[-1]=np.copy(hprev)
+        self.cs[-1]=np.copy(cprev)
         for t in range(len(inputs)):
-            pass
-
+            #concatenate inputs with hprev
+            self.concat_s[t]=np.concatenate([inputs[t],self.hs[t-1]],axis=1)
+            self.forget_g[t]=self.sigmoid(np.dot(self.concat_s[t],self.Wf)+self.bf)
+            self.input_g[t]=self.sigmoid(np.dot(self.concat_s[t],self.Wi)+self.bi)
+            self.cell_candidates[t]=np.tanh(np.dot(self.concat_s[t],self.Wc)+self.bc)
+            self.cs[t]=self.forget_g[t]*self.cs[t-1]+self.input_g[t]*self.cell_candidates[t]
+            self.output_g[t]=self.sigmoid(np.dot(self.concat_s[t],self.Wo)+self.bo)
+            self.hs[t]=self.output_g[t]*np.tanh(self.cs[t])
 
     def backward():
         pass
