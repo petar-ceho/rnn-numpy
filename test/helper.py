@@ -46,6 +46,7 @@ mock_data={
  'Batchish': 'Russian'
 }
 
+#when shuffling there is 1 or more examples where to test failes check the abs difference      
 def get_mock_data():
     mock_data_list=list(mock_data.items())
     random.shuffle(mock_data_list)

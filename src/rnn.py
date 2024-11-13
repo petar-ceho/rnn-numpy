@@ -106,20 +106,23 @@ class LSTM:
     def forward(self,inputs,hprev,cprev):
         self.hs={};self.cs={};self.concat_s={}
         self.forget_g={};self.input_g={};self.output_g={};self.cell_candidates={}
-        #hs and cs at t=0  
-        self.hs[-1]=np.copy(hprev)
-        self.cs[-1]=np.copy(cprev)
+        self.logits={}
+        #hidden state  and cell state  at t=0  
+        self.hs[-1]=np.copy(hprev);self.cs[-1]=np.copy(cprev)
         for t in range(len(inputs)):
-            #concatenate inputs with hprev
-            self.concat_s[t]=np.concatenate([inputs[t],self.hs[t-1]],axis=1)
-            self.forget_g[t]=self.sigmoid(np.dot(self.concat_s[t],self.Wf)+self.bf)
-            self.input_g[t]=self.sigmoid(np.dot(self.concat_s[t],self.Wi)+self.bi)
-            self.cell_candidates[t]=np.tanh(np.dot(self.concat_s[t],self.Wc)+self.bc)
-            self.cs[t]=self.forget_g[t]*self.cs[t-1]+self.input_g[t]*self.cell_candidates[t]
-            self.output_g[t]=self.sigmoid(np.dot(self.concat_s[t],self.Wo)+self.bo)
-            self.hs[t]=self.output_g[t]*np.tanh(self.cs[t])
+            self.concat_s[t]=np.concatenate([inputs[t],self.hs[t-1]],axis=1) 
+            self.forget_g[t]=self.sigmoid(np.dot(self.concat_s[t],self.Wf)+self.bf) #forget gate 
+            self.input_g[t]=self.sigmoid(np.dot(self.concat_s[t],self.Wi)+self.bi) # input gate 
+            self.cell_candidates[t]=np.tanh(np.dot(self.concat_s[t],self.Wc)+self.bc)  #cell candidate 
+            self.cs[t]=self.forget_g[t]*self.cs[t-1]+self.input_g[t]*self.cell_candidates[t] #new cell state 
+            self.output_g[t]=self.sigmoid(np.dot(self.concat_s[t],self.Wo)+self.bo) #output gate 
+            self.hs[t]=self.output_g[t]*np.tanh(self.cs[t])#hidden state 
+            self.logits[t]=np.dot(self.hs[t],self.Wy)+self.by #output layer -->logits 
+        
+        #apply softmax after this 
+        return self.logits
 
-    def backward():
+    def backward(self):
         pass
 
     def sigmoid(self,x):
