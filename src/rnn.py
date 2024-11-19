@@ -88,21 +88,24 @@ class RNN:
 
 class LSTM: 
     
-    def __init__(self,input_size,hidden_size):
+    def __init__(self,input_size,hidden_size,output_size):
         conc_input_size=input_size+hidden_size
         #forget gate weights
         self.Wf=np.random.randn(conc_input_size,hidden_size)*0.01
-        self.bf = np.zeros((1, hidden_size))                       # Shape: (1, 64)
+        self.bf = np.zeros((1, hidden_size))                       
         #input gate weights
         self.Wi=np.random.randn(conc_input_size,hidden_size)*0.01
-        self.bi = np.zeros((1, hidden_size))                       # Shape: (1, 64)
+        self.bi = np.zeros((1, hidden_size))                       
         #cell state candidate weights 
         self.Wc=np.random.randn(conc_input_size,hidden_size)*0.01
-        self.bc = np.zeros((1, hidden_size))                       # Shape: (1, 64)
+        self.bc = np.zeros((1, hidden_size))                       
         #output gate weighs
         self.Wo=np.random.randn(conc_input_size,hidden_size)*0.01
-        self.bo = np.zeros((1, hidden_size))                       # Shape: (1, 64)
-
+        self.bo = np.zeros((1, hidden_size))                       
+        #output layer -->logits
+        self.Wy=np.random.randn(hidden_size,output_size)*0.01
+        self.by = np.zeros((1, output_size))  
+    
     def forward(self,inputs,hprev,cprev):
         self.hs={};self.cs={};self.concat_s={}
         self.forget_g={};self.input_g={};self.output_g={};self.cell_candidates={}
@@ -125,8 +128,14 @@ class LSTM:
     def backward(self):
         pass
 
+    #TODO:add function to init dweights needed ???
+    def init_backward(self):
+        pass
+
     def sigmoid(self,x):
         return 1 / (1 + np.exp(-x))
+    
+
 
 
 #softmax+categorical cross entropy 
