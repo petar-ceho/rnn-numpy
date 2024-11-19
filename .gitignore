@@ -165,5 +165,7 @@ cython_debug/
 /data/*
 
 
-#ignore lstm notebook.
+#ignore lstm and autoencoder notebook.
 /src/lstm.ipynb 
+#ignore lstm notebook.
+/src/autoencoder.ipynb 
