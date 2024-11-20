@@ -46,7 +46,7 @@ class RNN:
             dhraw=(1-self.hs[t]*self.hs[t])*dh #tanh backpropagation
             dh = np.dot(dhraw, self.Whh.T) #dy_dh for t-1    
             
-            dbh+=np.sum(dhraw,axis=0,keepdims=True)#dhraw_dbh
+            dbh+=np.sum(dhraw,axis=0,keepdims=True)#dhraw_dbh   
             dbx+=np.sum(dhraw,axis=0,keepdims=True)#dhraw_dbx
             dWxh+=np.dot(inputs[t].T,dhraw)#dhraw_dwxh
             dWhh+=np.dot(self.hs[t-1].T,dhraw)#dhraw_dwhh
@@ -84,8 +84,6 @@ class RNN:
     def init_hidden(self):
         return np.zeros((1,self.hidden_size))
     
-
-
 class LSTM: 
     
     def __init__(self,input_size,hidden_size,output_size):
@@ -136,7 +134,7 @@ class LSTM:
         return 1 / (1 + np.exp(-x))
     
 class Autoencoder:
-    def __init__(self, input_size, hidden_size, learning_rate=0.001):
+    def __init__(self, input_size, hidden_size, learning_rate):
         self.input_size = input_size
         self.hidden_size = hidden_size
         self.learning_rate = learning_rate
@@ -162,6 +160,16 @@ class Autoencoder:
     
     def backward(self):
         pass
+
+class MeanSquareError:
+    
+    def forward(self,logits,correct_labels):
+        return np.mean(np.square((logits-correct_labels)))
+    
+    def backward(self,logits,correct_labels):
+        return 2*(logits-correct_labels)/logits.shape[0]
+        
+
 
 #softmax+categorical cross entropy 
 class CrossEntropyLoss: 

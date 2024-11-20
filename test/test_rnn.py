@@ -3,7 +3,7 @@ import numpy as np
 import torch 
 import torch.nn as nn
 from src.helper import TensorHelper
-from src.rnn import RNN,CrossEntropyLoss
+from src.models import RNN,CrossEntropyLoss
 from helper import all_categories,get_mock_data,RNNTorch,all_letters
 import random
 

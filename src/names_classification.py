@@ -1,7 +1,7 @@
 import numpy as np
 import random
 import os
-from rnn import RNN,CrossEntropyLoss
+from src.models import RNN,CrossEntropyLoss
 from helper import findFiles,readLines,n_letters,all_letters,TensorHelper
 
 #train(80%),dev(10%),test(10%) no duplicate names 
