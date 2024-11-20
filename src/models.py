@@ -134,32 +134,44 @@ class LSTM:
         return 1 / (1 + np.exp(-x))
     
 class Autoencoder:
-    def __init__(self, input_size, hidden_size, learning_rate):
+    def __init__(self, input_size, hidden_size):
         self.input_size = input_size
         self.hidden_size = hidden_size
-        self.learning_rate = learning_rate
-        
-        self.W1 = np.random.randn(input_size, hidden_size) * 0.01
-        self.b1 = np.zeros((1, hidden_size))
-        self.W2 = np.random.randn(hidden_size, input_size) * 0.01
-        self.b2 = np.zeros((1, input_size))
+        #encoder params
+        self.w_enc = np.random.randn(input_size, hidden_size) * 0.01
+        self.b_enc = np.zeros((1, hidden_size))
+        #decoder params
+        self.w_dec = np.random.randn(hidden_size, input_size) * 0.01
+        self.b_dec = np.zeros((1, input_size))
 
     def sigmoid(self, x):
         return 1 / (1 + np.exp(-x))
-
+    
     def forward(self,X):
         #encoder 
-        self.z1=np.dot(X,self.W1)+self.b1
+        self.X=X
+        self.z1=np.dot(X,self.w_enc)+self.b_enc
         self.a1=self.sigmoid(self.z1)
-
         #decoder 
-        self.z2=np.dot(self.a1,self.W2)+self.b2
+        self.z2=np.dot(self.a1,self.w_dec)+self.b_dec
         self.a2=self.sigmoid(self.z2)
 
         return self.a2
-    
-    def backward(self):
-        pass
+
+    def backward(self,dout):
+
+        dy_da2=self.a2*(1-self.a2) * dout #sigmoid derivative of a2 + chain rule  
+        dy_da1=np.dot(dy_da2,self.w_dec.T)  
+        dy_dw_dec=np.dot(self.a1.T,dy_da2)
+        dy_db_dec=np.sum(dy_da2,axis=0,keepdims=True)
+        
+        dy_da1*=self.a1*(1-self.a1) #sigmoid der of a1 + chain rule 
+        dy_dw_enc=np.dot(self.X.T,dy_da1)
+        dy_db_enc=np.sum(dy_da1,axis=0,keepdims=True)
+        
+        return dy_dw_dec,dy_db_dec,dy_dw_enc,dy_db_enc
+
+
 
 class MeanSquareError:
     
