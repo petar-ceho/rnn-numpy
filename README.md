@@ -1,4 +1,4 @@
-# Many-to-One Recurrent Neural Network (RNN) in NumPy
+# Many-to-One Recurrent Neural Network (RNN),LSTM,Autoencoders in NumPy
 
 This repository implements a many-to-one Recurrent Neural Network (RNN) with Softmax and Categorical cross entropy using NumPy. Key features include:
 

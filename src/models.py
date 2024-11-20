@@ -161,9 +161,9 @@ class Autoencoder:
     def backward(self,dout):
 
         dy_da2=self.a2*(1-self.a2) * dout #sigmoid derivative of a2 + chain rule  
-        dy_da1=np.dot(dy_da2,self.w_dec.T)  
-        dy_dw_dec=np.dot(self.a1.T,dy_da2)
-        dy_db_dec=np.sum(dy_da2,axis=0,keepdims=True)
+        dy_da1=np.dot(dy_da2,self.w_dec.T)   
+        dy_dw_dec=np.dot(self.a1.T,dy_da2) #dy_dweight_dec = matmul(a1(transposed),dy_da2) 
+        dy_db_dec=np.sum(dy_da2,axis=0,keepdims=True) 
         
         dy_da1*=self.a1*(1-self.a1) #sigmoid der of a1 + chain rule 
         dy_dw_enc=np.dot(self.X.T,dy_da1)
