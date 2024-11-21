@@ -105,9 +105,21 @@ class LSTM:
         self.by = np.zeros((1, output_size))  
     
     def forward(self,inputs,hprev,cprev):
-        self.hs={};self.cs={};self.concat_s={}
-        self.forget_g={};self.input_g={};self.output_g={};self.cell_candidates={}
-        self.logits={}
+        #dictionaries for all lstm states   
+        states_and_gates = {
+            'hidden_states': {},
+            'cell_states': {},
+            'concat_states': {},
+            'forget_g': {},
+            'input_g': {},
+            'output_g': {},
+            'cell_candidates': {},
+            'logits': {}
+        }
+        
+        for name, dict_storage in states_and_gates.items():
+            setattr(self, name, dict_storage)
+
         #hidden state  and cell state  at t=0  
         self.hs[-1]=np.copy(hprev);self.cs[-1]=np.copy(cprev)
         for t in range(len(inputs)):
@@ -123,12 +135,28 @@ class LSTM:
         #apply softmax after this 
         return self.logits
 
-    def backward(self):
-        pass
+    def backward(self,inputs):
+        dWf,dbf,dWi,dbi,dWc,dbc,dWo,dbo,dWhy,dby=self.init_gradients()
+        for t in reversed(range(inputs)):
+            pass
 
-    #TODO:add function to init dweights needed ???
-    def init_backward(self):
-        pass
+    #init gradients with zero for backprop  
+    def init_gradients(self):
+        dWf=np.zeros_like(self.Wf)
+        dbf=np.zeros_like(self.bf)
+        
+        dWi=np.zeros_like(self.Wi)
+        dbi=np.zeros_like(self.bi)
+        
+        dWc=np.zeros_like(self.Wc)
+        dbc=np.zeros_like(self.bc)
+        
+        dWo=np.zeros_like(self.Wo)
+        dbo=np.zeros_like(self.bo)
+
+        dWhy=np.zeros_like(self.Wy)
+        dby=np.zeros_like(self.by)
+        return dWf,dbf,dWi,dbi,dWc,dbc,dWo,dbo,dWhy,dby
 
     def sigmoid(self,x):
         return 1 / (1 + np.exp(-x))
@@ -138,10 +166,10 @@ class Autoencoder:
         self.input_size = input_size
         self.hidden_size = hidden_size
         #encoder params
-        self.w_enc = np.random.randn(input_size, hidden_size) * 0.01
+        self.W_enc = np.random.randn(input_size, hidden_size) * 0.01
         self.b_enc = np.zeros((1, hidden_size))
         #decoder params
-        self.w_dec = np.random.randn(hidden_size, input_size) * 0.01
+        self.W_dec = np.random.randn(hidden_size, input_size) * 0.01
         self.b_dec = np.zeros((1, input_size))
 
     def sigmoid(self, x):
@@ -150,10 +178,10 @@ class Autoencoder:
     def forward(self,X):
         #encoder 
         self.X=X
-        self.z1=np.dot(X,self.w_enc)+self.b_enc
+        self.z1=np.dot(X,self.W_enc)+self.b_enc
         self.a1=self.sigmoid(self.z1)
         #decoder 
-        self.z2=np.dot(self.a1,self.w_dec)+self.b_dec
+        self.z2=np.dot(self.a1,self.W_dec)+self.b_dec
         self.a2=self.sigmoid(self.z2)
 
         return self.a2
@@ -161,7 +189,7 @@ class Autoencoder:
     def backward(self,dout):
 
         dy_da2=self.a2*(1-self.a2) * dout #sigmoid derivative of a2 + chain rule  
-        dy_da1=np.dot(dy_da2,self.w_dec.T)   
+        dy_da1=np.dot(dy_da2,self.W_dec.T)   
         dy_dw_dec=np.dot(self.a1.T,dy_da2) #dy_dweight_dec = matmul(a1(transposed),dy_da2) 
         dy_db_dec=np.sum(dy_da2,axis=0,keepdims=True) 
         
@@ -171,8 +199,6 @@ class Autoencoder:
         
         return dy_dw_dec,dy_db_dec,dy_dw_enc,dy_db_enc
 
-
-
 class MeanSquareError:
     
     def forward(self,logits,correct_labels):
@@ -181,8 +207,6 @@ class MeanSquareError:
     def backward(self,logits,correct_labels):
         return 2*(logits-correct_labels)/logits.shape[0]
         
-
-
 #softmax+categorical cross entropy 
 class CrossEntropyLoss: 
 
