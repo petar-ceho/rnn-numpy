@@ -85,7 +85,7 @@ class RNN:
         return np.zeros((1,self.hidden_size))
     
 class LSTM: 
-    
+  
     def __init__(self,input_size,hidden_size,output_size):
         conc_input_size=input_size+hidden_size
         #forget gate weights
@@ -135,28 +135,22 @@ class LSTM:
         #apply softmax after this 
         return self.logits
 
-    def backward(self,inputs):
-        dWf,dbf,dWi,dbi,dWc,dbc,dWo,dbo,dWhy,dby=self.init_gradients()
-        for t in reversed(range(inputs)):
-            pass
-
+    def backward(self,dout,inputs):
+        dWf,dbf,dWi,dbi,dWc,dbc,dWo,dbo,dWhy,dby,dh=self.init_gradients()
+        for t in reversed(range(len(inputs))):
+            dWhy+=np.dot(self.hidden_states[t].T,dout[t]) #dy_dwhy 
+            dby+=np.sum(dout[t],axis=0,keepdims=True) #dy_dby    
+            dh+=np.dot(dout[t],self.Wy.T) #dy_dh 
+            
     #init gradients with zero for backprop  
     def init_gradients(self):
-        dWf=np.zeros_like(self.Wf)
-        dbf=np.zeros_like(self.bf)
-        
-        dWi=np.zeros_like(self.Wi)
-        dbi=np.zeros_like(self.bi)
-        
-        dWc=np.zeros_like(self.Wc)
-        dbc=np.zeros_like(self.bc)
-        
-        dWo=np.zeros_like(self.Wo)
-        dbo=np.zeros_like(self.bo)
-
-        dWhy=np.zeros_like(self.Wy)
-        dby=np.zeros_like(self.by)
-        return dWf,dbf,dWi,dbi,dWc,dbc,dWo,dbo,dWhy,dby
+        dWf=np.zeros_like(self.Wf);dbf=np.zeros_like(self.bf) #forget gates gradients  
+        dWi=np.zeros_like(self.Wi);dbi=np.zeros_like(self.bi) #input gates gr
+        dWc=np.zeros_like(self.Wc);dbc=np.zeros_like(self.bc) # cell state gr
+        dWo=np.zeros_like(self.Wo);dbo=np.zeros_like(self.bo) # output gate gr 
+        dWhy=np.zeros_like(self.Wy);dby=np.zeros_like(self.by)#logits layer gr
+        dh=np.zeros_like(self.hidden_states[0])
+        return dWf,dbf,dWi,dbi,dWc,dbc,dWo,dbo,dWhy,dby,dh
 
     def sigmoid(self,x):
         return 1 / (1 + np.exp(-x))
