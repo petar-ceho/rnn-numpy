@@ -130,6 +130,7 @@ class LSTM:
             self.cs[t]=self.forget_g[t]*self.cs[t-1]+self.input_g[t]*self.cell_candidates[t] #new cell state 
             self.output_g[t]=self.sigmoid(np.dot(self.concat_s[t],self.Wo)+self.bo) #output gate 
             self.hs[t]=self.output_g[t]*np.tanh(self.cs[t])#hidden state 
+            
             self.logits[t]=np.dot(self.hs[t],self.Wy)+self.by #output layer -->logits 
         
         #apply softmax after this 
@@ -137,11 +138,27 @@ class LSTM:
 
     def backward(self,dout,inputs):
         dWf,dbf,dWi,dbi,dWc,dbc,dWo,dbo,dWhy,dby,dh=self.init_gradients()
+        dc_next = np.zeros_like(self.cell_states[0])
+        dh_next = np.zeros_like(self.hidden_states[0])
+
         for t in reversed(range(len(inputs))):
+            #output layer gradients   
             dWhy+=np.dot(self.hidden_states[t].T,dout[t]) #dy_dwhy 
             dby+=np.sum(dout[t],axis=0,keepdims=True) #dy_dby    
-            dh+=np.dot(dout[t],self.Wy.T) #dy_dh 
+            dh+=np.dot(dout[t],self.Wy.T)+dh_next #dy_dh 
             
+            tanh_c=np.tanh(self.cell_states[t]) 
+            do=dh*tanh_c #dy_doutput_gate * dout(dh)
+            do=self.output_g[t]*(1-self.output_g[t])*do #sigmoid derivative 
+            #output gate gradients   
+            d_conc_state=np.dot(do,self.Wo.T)
+            dWo+=np.dot(self.concat_states[t].T,do)
+            dbo+=np.sum(do,axis=0,keepdims=True)
+
+            
+
+
+        
     #init gradients with zero for backprop  
     def init_gradients(self):
         dWf=np.zeros_like(self.Wf);dbf=np.zeros_like(self.bf) #forget gates gradients  

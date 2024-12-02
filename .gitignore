@@ -169,3 +169,4 @@ cython_debug/
 /src/lstm.ipynb 
 #ignore lstm notebook.
 /src/autoencoder.ipynb 
+/src/lstm_backward.ipynb
