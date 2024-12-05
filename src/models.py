@@ -154,11 +154,13 @@ class LSTM:
             d_conc_state=np.dot(do,self.Wo.T)
             dWo+=np.dot(self.concat_states[t].T,do)
             dbo+=np.sum(do,axis=0,keepdims=True)
-
             
+            # cell state backpropagation  
+            dc = np.copy(dc_next)
+            dc+=dh * self.output_g[t]  * (1-tanh_c**2) #tanh backprop 
+            dc_next = self.forget_g[t] * dc
 
-
-        
+    
     #init gradients with zero for backprop  
     def init_gradients(self):
         dWf=np.zeros_like(self.Wf);dbf=np.zeros_like(self.bf) #forget gates gradients  
