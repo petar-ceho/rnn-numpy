@@ -160,8 +160,15 @@ class LSTM:
             dc+=dh * self.output_g[t]  * (1-tanh_c**2) #tanh backprop 
             dc_next = self.forget_g[t] * dc
             dc_candidate=dc*self.input_g[t]
-            dc_candidate=(1-self.cell_candidates[t]**2)*dc_candidate
-    
+            dc_candidate=(1-self.cell_candidates[t]**2)*dc_candidate #tanh backward * dout 
+
+            d_conc_state += np.dot(dc_candidate, self.Wc.T)  # Backprop through matrix multiplication
+            dWc += np.dot(self.concat_states[t].T, dc_candidate)  # Gradient for Wc
+            dbc += np.sum(dc_candidate, axis=0, keepdims=True)  #
+            
+            #TODO:compute input gates gradients then forget gate and concat state 
+             
+
     #init gradients with zero for backprop  
     def init_gradients(self):
         dWf=np.zeros_like(self.Wf);dbf=np.zeros_like(self.bf) #forget gates gradients  
