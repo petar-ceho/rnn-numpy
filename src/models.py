@@ -166,8 +166,11 @@ class LSTM:
             dWc += np.dot(self.concat_states[t].T, dc_candidate)  # Gradient for Wc
             dbc += np.sum(dc_candidate, axis=0, keepdims=True)  #
             
-            #TODO:compute input gates gradients then forget gate and concat state 
+            #TODO:compute forget gate and concat state 
+            d_input_gate=dc*self.cell_candidates[t] #from cell state equation above 
+            d_input_gate=self.input_g[t]*(1-self.input_g[t])*d_input_gate #through sigmoid 
              
+            
 
     #init gradients with zero for backprop  
     def init_gradients(self):
