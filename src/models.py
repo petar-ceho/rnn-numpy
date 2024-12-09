@@ -165,12 +165,25 @@ class LSTM:
             d_conc_state += np.dot(dc_candidate, self.Wc.T)  # Backprop through matrix multiplication
             dWc += np.dot(self.concat_states[t].T, dc_candidate)  # Gradient for Wc
             dbc += np.sum(dc_candidate, axis=0, keepdims=True)  #
-            
-            #TODO:compute forget gate and concat state 
+            #input gate backprop 
             d_input_gate=dc*self.cell_candidates[t] #from cell state equation above 
             d_input_gate=self.input_g[t]*(1-self.input_g[t])*d_input_gate #through sigmoid 
-             
-            
+            # update w/b  for input gate
+            dWi += np.dot(self.concat_states[t].T, d_input_gate)  # gradient for Wi
+            dbi += np.sum(d_input_gate, axis=0, keepdims=True)    # gradient for bi
+            # add to d_conc_state
+            d_conc_state += np.dot(d_input_gate, self.Wi.T)  # gradient flowing back to concat_states
+            #forget gate gradients 
+            d_forget_gate = dc * self.cell_states[t-1]
+            d_forget_gate=self.forget_g[t]*(1-self.forget_g[t])*d_forget_gate #through sigmoid 
+            dWf += np.dot(self.concat_states[t].T, d_forget_gate)  # gradient for Wf
+            dbf += np.sum(d_forget_gate, axis=0, keepdims=True)    # gradient for bf
+
+            # Add forget gate contribution to d_conc_state
+            d_conc_state += np.dot(d_forget_gate, self.Wf.T)  # gradient flowing back to concat_states 
+
+            #TODO:compute concat state gradients 
+
 
     #init gradients with zero for backprop  
     def init_gradients(self):
