@@ -100,7 +100,7 @@ class LSTM:
         #output gate weighs
         self.Wo=np.random.randn(conc_input_size,hidden_size)*0.01
         self.bo = np.zeros((1, hidden_size))                       
-        #output layer -->logits
+        #output layer --> logits
         self.Wy=np.random.randn(hidden_size,output_size)*0.01
         self.by = np.zeros((1, output_size))  
     
@@ -130,14 +130,13 @@ class LSTM:
             self.cs[t]=self.forget_g[t]*self.cs[t-1]+self.input_g[t]*self.cell_candidates[t] #new cell state 
             self.output_g[t]=self.sigmoid(np.dot(self.concat_s[t],self.Wo)+self.bo) #output gate 
             self.hs[t]=self.output_g[t]*np.tanh(self.cs[t])#hidden state 
-            
             self.logits[t]=np.dot(self.hs[t],self.Wy)+self.by #output layer -->logits 
         
         #apply softmax after this 
         return self.logits
 
     def backward(self,dout,inputs):
-        dWf,dbf,dWi,dbi,dWc,dbc,dWo,dbo,dWhy,dby,dh=self.init_gradients()
+        dWf,dbf,dWi,dbi,dWc,dbc,dWo,dbo,dWhy,dby,dhs=self.init_gradients()
         dc_next = np.zeros_like(self.cell_states[0])
         dh_next = np.zeros_like(self.hidden_states[0])
 
@@ -145,10 +144,10 @@ class LSTM:
             #output layer gradients   
             dWhy+=np.dot(self.hidden_states[t].T,dout[t]) #dy_dwhy 
             dby+=np.sum(dout[t],axis=0,keepdims=True) #dy_dby    
-            dh+=np.dot(dout[t],self.Wy.T)+dh_next #dy_dh 
+            dhs+=np.dot(dout[t],self.Wy.T)+dh_next #dy_dh 
             
             tanh_c=np.tanh(self.cell_states[t]) 
-            do=dh*tanh_c #dy_doutput_gate * dout(dh)
+            do=dhs*tanh_c #dy_doutput_gate * dout(dh)
             do=self.output_g[t]*(1-self.output_g[t])*do #sigmoid derivative 
             #output gate gradients   
             d_conc_state=np.dot(do,self.Wo.T)
@@ -157,7 +156,7 @@ class LSTM:
             
             # cell state and cell candidate backpropagation 
             dc = np.copy(dc_next)
-            dc+=dh * self.output_g[t]  * (1-tanh_c**2) #tanh backprop 
+            dc+=dhs * self.output_g[t]  * (1-tanh_c**2) #tanh backprop 
             dc_next = self.forget_g[t] * dc
             dc_candidate=dc*self.input_g[t]
             dc_candidate=(1-self.cell_candidates[t]**2)*dc_candidate #tanh backward * dout 
@@ -165,24 +164,24 @@ class LSTM:
             d_conc_state += np.dot(dc_candidate, self.Wc.T)  # Backprop through matrix multiplication
             dWc += np.dot(self.concat_states[t].T, dc_candidate)  # Gradient for Wc
             dbc += np.sum(dc_candidate, axis=0, keepdims=True)  #
-            #input gate backprop 
+           
+            #input gate gradients
             d_input_gate=dc*self.cell_candidates[t] #from cell state equation above 
             d_input_gate=self.input_g[t]*(1-self.input_g[t])*d_input_gate #through sigmoid 
             # update w/b  for input gate
             dWi += np.dot(self.concat_states[t].T, d_input_gate)  # gradient for Wi
             dbi += np.sum(d_input_gate, axis=0, keepdims=True)    # gradient for bi
-            # add to d_conc_state
+            # Add input gate contribution to d_conc_state
             d_conc_state += np.dot(d_input_gate, self.Wi.T)  # gradient flowing back to concat_states
             #forget gate gradients 
             d_forget_gate = dc * self.cell_states[t-1]
             d_forget_gate=self.forget_g[t]*(1-self.forget_g[t])*d_forget_gate #through sigmoid 
             dWf += np.dot(self.concat_states[t].T, d_forget_gate)  # gradient for Wf
             dbf += np.sum(d_forget_gate, axis=0, keepdims=True)    # gradient for bf
-
             # Add forget gate contribution to d_conc_state
             d_conc_state += np.dot(d_forget_gate, self.Wf.T)  # gradient flowing back to concat_states 
+            #this is enough for gradient descent(only weights updates) so no need to store the d_conc_state as dict.
 
-            #TODO:compute concat state gradients 
 
 
     #init gradients with zero for backprop  
